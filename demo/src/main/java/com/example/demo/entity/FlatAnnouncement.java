@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "FlatAnnouncement")
 public class FlatAnnouncement {
@@ -15,13 +17,11 @@ public class FlatAnnouncement {
     private Integer rooms;
     private Enum type;
 
-    @ManyToOne
-    @JoinColumn(name = "FlatStyle")
-    private FlatStyle flatStyle;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FlatStyle> flatStyle;
 
-    @ManyToOne
-    @JoinColumn(name = "tb_users")
-    private User user;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FlatPhoto> flatPhoto;
 
     // getters and setters
 }
