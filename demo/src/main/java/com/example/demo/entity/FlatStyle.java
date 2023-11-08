@@ -6,8 +6,7 @@ import jakarta.persistence.*;
 public class FlatStyle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "style")
+    private long id;
     private String style;
 
     // getters and setters

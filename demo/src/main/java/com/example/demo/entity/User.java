@@ -10,17 +10,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
     private String password;
 
-    @Column(name = "phone")
     private String phone_number;
+
+
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserStatus> userStatuses;
@@ -28,6 +27,7 @@ public class User {
     private List<Favorites> favorites;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FlatAnnouncement> flatAnnouncements;
+
 
 
     // constructors, getters and setters

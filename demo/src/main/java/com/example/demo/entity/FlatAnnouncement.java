@@ -12,16 +12,20 @@ public class FlatAnnouncement {
 
     private String title;
     private String description;
-    private Integer price;
+    private int price;
     private Float area;
-    private Integer rooms;
-    private Enum type;
+    private int rooms;
+    enum type{
+        active,archive,sell,buy
+    };
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FlatStyle> flatStyle;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FlatPhoto> flatPhoto;
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     // getters and setters
 }
