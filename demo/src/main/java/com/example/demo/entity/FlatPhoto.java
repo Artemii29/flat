@@ -8,10 +8,8 @@ import jakarta.persistence.*;
 public class FlatPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String fileName;
     private long id;
-
+    private String fileName;
     @ManyToOne
-    @JoinColumn(name = "FlatAnnouncement_id")
     private FlatAnnouncement flatAnnouncement;
 }
