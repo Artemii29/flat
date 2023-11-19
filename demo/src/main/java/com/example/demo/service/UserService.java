@@ -1,55 +1,29 @@
 package com.example.demo.service;
-
-import java.util.Optional;
+import org.springframework.context.annotation.Bean;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.ArrayList;
+import org.springframework.context.annotation.Configuration;
 @Service
-
 public class UserService implements UserDetailsService {
+
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    public List<User> getALL() {
-        return userRepository.getAll();
-    }
+    private UserRepository userRepository;
 
-    public User loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = userRepository.findByName(name);
+    @Autowired
+    private TokenUtil tokenUtil;
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return user;
-    }
-    public boolean deleteUser(Long ID){
-        Optional<User> user = Optional.ofNullable(userRepository.findByID(ID));
-        if(user.isPresent()){
-            userRepository.deleteByID(ID);
-            return true;
-        };
-        return false;
-    }
     public boolean saveUser(User user) {
         User userFromDB = userRepository.findByName(user.getName());
 
@@ -57,9 +31,29 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setPassword(BCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
 
+    public String loginUser(String username, String password) {
+        User user = userRepository.findByName(username);
+
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new UsernameNotFoundException("Invalid username or password");
+        }
+
+        return tokenUtil.generateToken(username);
+    }
+
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByName(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), new ArrayList<>());
+
+    }
 }

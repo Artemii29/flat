@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+
 @RestController
 @RequestMapping("/anouncement")
 public class Anouncement {
@@ -18,7 +19,7 @@ public class Anouncement {
 
     @GetMapping
     public List<Anouncement> getAllAnnouncement(){
-       return FlatAnnouncement.getAllAnnouncement();
+    //   return FlatAnnouncement.getAllAnnouncement();
    }
    @PostMapping
     public FlatAnnouncement createAnnouncement(FlatAnnouncement flatAnnouncement){
