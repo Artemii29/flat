@@ -19,10 +19,10 @@ public class FlatAnnouncement {
         active,archive,sell,buy
     };
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FlatStyle> flatStyle;
+    @ManyToOne
+    private FlatStyle flatStyle;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "flatAnnouncement", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FlatPhoto> flatPhoto;
     @ManyToOne
     @JoinColumn(name = "user_id")
