@@ -16,10 +16,7 @@ public class UserController {
     public UserController(UserService service){
         this.service = service;
     }
-    @GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<User> getAll() {
-        return authService.getALL();
-    }
+
 
     @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {

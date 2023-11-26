@@ -21,9 +21,7 @@ public class AnnouncementService {
     public List<FlatAnnouncement> getAnnouncementAll() {
         return announcementRepository.findAll();
     }
-    public FlatAnnouncement createAnnouncement(FlatAnnouncement flatAnnouncement){
-        return  announcementRepository.createFlatAnnouncement(flatAnnouncement);
-    }
+   
     public FlatAnnouncement deleteAnnouncement(Long id){
         return announcementRepository.deleteFlatAnnouncementById(id);
     }

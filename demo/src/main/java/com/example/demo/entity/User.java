@@ -20,6 +20,7 @@ public class User {
     private String location;
 
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Favorites> favorites;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
