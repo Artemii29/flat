@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 import jakarta.persistence.*;
-
 @Entity
 @Table(name = "tb_favorites")
 public class Favorites {

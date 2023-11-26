@@ -1,59 +1,54 @@
 package com.example.demo.service;
-import org.springframework.context.annotation.Bean;
+
+import com.example.demo.dtos.RegistrationUserDto;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.utils.TokenUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import java.util.ArrayList;
-import org.springframework.context.annotation.Configuration;
+
+import java.util.Optional;
+
+
 @Service
 public class UserService implements UserDetailsService {
-
-    @Autowired
+    private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserRepository userRepository;
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Autowired
-    private TokenUtil tokenUtil;
-
-    public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByName(user.getName());
-
-        if (userFromDB != null) {
-            return false;
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return true;
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public String loginUser(String username, String password) {
-        User user = userRepository.findByName(username);
-
-        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
-            throw new UsernameNotFoundException("Invalid username or password");
-        }
-
-        return tokenUtil.generateToken(username);
+    public Optional<User> findByUsername(String name) {
+        return userRepository.findByUsername(name);
     }
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByName(username);
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        User user = findByUsername(name).orElseThrow(() -> new UsernameNotFoundException(
+                String.format("Пользователь '%s' не найден", name)));
+        return new org.springframework.security.core.userdetails.User(
+               user.getName(),
+                user.getPassword()
+        );
+    }
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), new ArrayList<>());
-
+    public User createNewUser(RegistrationUserDto registrationUserDto) {
+        User user = new User();
+        user.setName(registrationUserDto.getName());
+        user.setEmail(registrationUserDto.getEmail());
+        user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
+        return userRepository.save(user);
     }
 }
