@@ -15,16 +15,12 @@ import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -35,9 +31,8 @@ public class UserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userRepository.findByName(name);
-        User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), new ArrayList<>());
+        return userRepository.findByName(name)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     public User createNewUser(RegistrationUserDto registrationUserDto) {

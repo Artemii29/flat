@@ -6,7 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<FlatAnnouncement, Long> {
-    FlatAnnouncement findFlatAnnouncementById(Long id);
-    FlatAnnouncement deleteFlatAnnouncementById(Long id);
-    FlatAnnouncement updateById(Long id);
 }
