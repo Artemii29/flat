@@ -1,7 +1,10 @@
 package com.example.demo.controllers;
 import com.example.demo.dtos.JwtRequest;
+import com.example.demo.dtos.RegistrationUserDto;
+import com.example.demo.entity.User;
 import com.example.demo.service.AuthService;
 import com.example.demo.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,12 @@ public class UserController {
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
         System.out.println("UserController createAuthToken " + authRequest.getUsername());
         return authService.createAuthToken(authRequest);
+    }
+    @PostMapping("/reg")
+    @Transactional
+    public ResponseEntity<String> registerUser(@RequestBody RegistrationUserDto registrationUserDto) {
+        service.createNewUser(registrationUserDto);
+        return ResponseEntity.ok("User registered successfully");
     }
 
 }
