@@ -15,6 +15,7 @@ public class UserController {
     private final AuthService authService;
     private final UserService service;
 
+
     public UserController(AuthService authService, UserService service){
         this.authService = authService;
         this.service = service;
@@ -25,11 +26,9 @@ public class UserController {
         System.out.println("UserController createAuthToken " + authRequest.getUsername());
         return authService.createAuthToken(authRequest);
     }
-    @PostMapping("/reg")
-    @Transactional
-    public ResponseEntity<String> registerUser(@RequestBody RegistrationUserDto registrationUserDto) {
-        service.createNewUser(registrationUserDto);
-        return ResponseEntity.ok("User registered successfully");
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody RegistrationUserDto registrationUserDto) {
+        return authService.createNewUser(registrationUserDto);
     }
 
 }

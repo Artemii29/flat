@@ -47,6 +47,8 @@ public class AuthService {
     }
 
     public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto){
+        System.out.println("user ");
+
         if(registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())){
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),"Пароли не сопадают"),HttpStatus.BAD_REQUEST);
         }
@@ -54,6 +56,7 @@ public class AuthService {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),"Пользователь с таким именем существует"),HttpStatus.BAD_REQUEST);
         }
         User user = userService.createNewUser(registrationUserDto);
-        return ResponseEntity.ok(new UserDto());
+        UserDto userDto = new UserDto(user.getId(), user.getName(), user.getEmail(), user.getPhone_number(), user.getPassword());
+        return ResponseEntity.ok(userDto);
     }
 }
