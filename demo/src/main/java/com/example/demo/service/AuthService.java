@@ -52,7 +52,7 @@ public class AuthService {
         if(registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())){
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),"Пароли не сопадают"),HttpStatus.BAD_REQUEST);
         }
-        if(Optional.ofNullable(registrationUserDto.getName()).isPresent()){
+        if(userService.findByName(registrationUserDto.getName()).isPresent()){
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),"Пользователь с таким именем существует"),HttpStatus.BAD_REQUEST);
         }
         User user = userService.createNewUser(registrationUserDto);

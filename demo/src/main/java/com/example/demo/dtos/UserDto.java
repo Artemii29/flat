@@ -1,11 +1,16 @@
 package com.example.demo.dtos;
 
+import com.example.demo.entity.User;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 public class UserDto {
     private Long id;
     private String name;
     private String email;
     private String phone_number;
     private String password;
+
 
     public UserDto(Long id, String name, String email, String phone_number, String password) {
         this.id = id;

@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,20 +24,19 @@ public class User implements UserDetails {
     private String phone_number;
     private String location;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
 
+//
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Favorites> favorites;
 //
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<FlatAnnouncement> flatAnnouncements;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
-
     @Override
     public String getUsername() {
         return name;
@@ -62,7 +62,5 @@ public class User implements UserDetails {
         return true;
     }
 
-    public enum UserRole {
-        USER, ADMIN
-    }
+
 }

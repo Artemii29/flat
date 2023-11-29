@@ -50,6 +50,7 @@ public class SecurityConfig {
 //                            return config;
 //                        }))
                 .authorizeHttpRequests(c -> c
+                        .requestMatchers("/api/v1/register").permitAll()
                         .requestMatchers("/api/v1/auth").permitAll()
                         .requestMatchers("/api/v1/announcements/**").hasAuthority("USER")
                         .anyRequest().authenticated()
