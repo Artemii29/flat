@@ -52,11 +52,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(c -> c
                         .requestMatchers("/api/v1/register").permitAll()
                         .requestMatchers("/api/v1/auth").permitAll()
-                        .requestMatchers("/api/v1/announcements/**").hasAuthority("USER")
+                        .requestMatchers("/api/v1/announcements/**").permitAll()
+                        .requestMatchers("/api/v1/createAnnouncement/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+               .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
 
     }

@@ -15,6 +15,7 @@ public class FlatAnnouncement {
     private int price;
     private Float area;
     private int rooms;
+
     enum type{
         active,archive,sell,buy
     };
@@ -24,8 +25,14 @@ public class FlatAnnouncement {
 
     @OneToMany(mappedBy = "flatAnnouncement", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FlatPhoto> flatPhoto;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
     // getters and setters
+    //
 }
