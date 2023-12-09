@@ -9,8 +9,9 @@ import { RouterLink, RouterView } from 'vue-router'
       <HelloWorld msg="You did it!" />
 
       <nav>
-        <RouterLink to="/registration">Registration</RouterLink>
-        <RouterLink to="authorization">Auth</RouterLink>
+        <RouterLink to="/registration">Регистрация</RouterLink>
+        <RouterLink to="/authorization">Авторизация</RouterLink>
+        <RouterLink to="/createAnnouncemnt">Создайте объявление</RouterLink>
       </nav>
     </div>
   </header>

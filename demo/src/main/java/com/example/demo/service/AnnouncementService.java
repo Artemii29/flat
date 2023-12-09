@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import com.example.demo.repository.AnnouncementRepository;
 
@@ -39,8 +40,8 @@ public class AnnouncementService {
         // TODO: add some business logic here
         return announcementRepository.save(flatAnnouncement);
     }
-    public FlatAnnouncement createAnnouncement(FlatAnnouncement flatAnnouncement,@AuthenticationPrincipal Principal principal){
-        String username = principal.getName();
+    public FlatAnnouncement createAnnouncement(FlatAnnouncement flatAnnouncement,@AuthenticationPrincipal UserDetails principal){
+        String username = principal.getUsername();
         User user = userRepository.findByName(username)
                  .orElseThrow(() -> new EntityNotFoundException("User not found"));
         flatAnnouncement.setUser(user);

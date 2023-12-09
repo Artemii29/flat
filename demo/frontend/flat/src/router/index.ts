@@ -21,6 +21,14 @@ const router = createRouter({
       name:'Authorization',
       component: () => import('@/views/Authorization.vue')
 
+    },
+    {
+      path: '/createAnnouncemnt',
+      name: 'createAnnouncemnt',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('@/views/Announcement.vue')
     }
   ]
 })

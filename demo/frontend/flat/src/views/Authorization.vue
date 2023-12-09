@@ -51,4 +51,11 @@ button{
   background-color: aqua;
   height: 40px;
 }
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+}
 </style>
