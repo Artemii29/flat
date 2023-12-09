@@ -23,7 +23,7 @@ import axios from 'axios';
 
 const title = ref('');
 const description = ref('');
-
+const token = ref(localStorage.getItem('token') || ''); // Проверка наличия значения в localStorage
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
 
@@ -34,10 +34,11 @@ const handleSubmit = async (e: Event) => {
   };
 
   try {
+    console.log(token.value);
     // Отправка POST запроса на сервер
     const response = await axios.post('http://localhost:8080/api/v1/announcements/createAnnouncement', announcementData, {
       headers: {
-        'Authorization': 'Bearer <your_token_here>',
+        Authorization: 'Bearer ' + token.value,
       },
     });
 
@@ -50,4 +51,5 @@ const handleSubmit = async (e: Event) => {
     console.error(error);
   }
 };
+
 </script>

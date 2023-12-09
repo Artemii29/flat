@@ -1,4 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
+import * as $ from 'jquery'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'

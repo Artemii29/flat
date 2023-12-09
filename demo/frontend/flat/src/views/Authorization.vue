@@ -9,6 +9,7 @@
   </div>
 </template>
 <script>
+
 import { ref } from 'vue';
 import axios from 'axios';
 
@@ -19,23 +20,24 @@ export default {
 
     const login = async () => {
       try {
-        const response = await axios.post('http://localhost:8080/api/v1/auth', {
-          username: username.value,
-          password: password.value
-        });
+        const authRequest = { username: username.value, password: password.value };
+        const response = await axios.post('http://localhost:8080/api/v1/auth', authRequest);
 
-        // Обработка успешной авторизации
+        if (response.data.token) {
+          localStorage.setItem('token', response.data.token);
+          console.log('Авторизация успешна!');
+          console.log(response.data.token);
+        } else {
+          throw new Error('Ошибка авторизации');
+        }
       } catch (error) {
-        // Обработка ошибки авторизации
+        console.error('Ошибка авторизации:', error.message);
       }
     };
-    return {
-      username,
-      password,
-      login
-    };
+
+    return { username, password, login };
   }
-}
+};
 </script>
 
 

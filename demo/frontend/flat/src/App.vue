@@ -12,6 +12,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/registration">Регистрация</RouterLink>
         <RouterLink to="/authorization">Авторизация</RouterLink>
         <RouterLink to="/createAnnouncemnt">Создайте объявление</RouterLink>
+        <RouterLink to="allAnnouncement">Все объявления</RouterLink>
       </nav>
     </div>
   </header>
