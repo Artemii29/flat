@@ -12,7 +12,7 @@
         <textarea v-model="description"></textarea>
       </label>
       <br />
-      <button type="submit">Submit</button>
+      <button type="submit" class="send_form">Submit</button>
     </form>
   </div>
 </template>
@@ -53,3 +53,17 @@ const handleSubmit = async (e: Event) => {
 };
 
 </script>
+<style scoped>
+.send_form{
+  border-radius: 20px;
+  width: 25%;
+  height: 40px;
+  background-color: aqua;
+  color: #f2f2f2;
+  font-weight: bold;
+  cursor: pointer;
+}
+.send_form:hover{
+  background-color: #00bfff;
+}
+</style>

@@ -1,11 +1,11 @@
 <template>
   <div>
-  <h1>Login</h1>
+  <h1>Вход</h1>
   <label for="username">Username:</label>
   <input type="text" id="username" v-model="username" />
   <label for="password">Password:</label>
   <input type="password" id="password" v-model="password" />
-  <button @click="login">Login</button>
+  <button @click="login">Вход</button>
   </div>
 </template>
 <script>
@@ -18,9 +18,10 @@ export default {
     const username = ref('');
     const password = ref('');
 
+
     const login = async () => {
       try {
-        const authRequest = { username: username.value, password: password.value };
+        const authRequest = { username: username.value, password: password.value};
         const response = await axios.post('http://localhost:8080/api/v1/auth', authRequest);
 
         if (response.data.token) {

@@ -13,4 +13,28 @@ public class FlatPhoto {
     private String fileName;
     @ManyToOne
     private FlatAnnouncement flatAnnouncement;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public FlatAnnouncement getFlatAnnouncement() {
+        return flatAnnouncement;
+    }
+
+    public void setFlatAnnouncement(FlatAnnouncement flatAnnouncement) {
+        this.flatAnnouncement = flatAnnouncement;
+    }
 }

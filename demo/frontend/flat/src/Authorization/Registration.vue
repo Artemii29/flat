@@ -5,6 +5,10 @@
     <input type="text" id="username" v-model="name"/>
     <label for="password">Password:</label>
     <input type="password" id="password" v-model="password"/>
+    <label for="email">Email:</label>
+    <input type="text" id="password" v-model="email" />
+    <label for="phone_number">Phone number:</label>
+    <input type="text" id="phone_number" v-model="phone_number" />
     <button @click="register">Register</button>
     <div class="have_accounted">
       <h2>Уже есть аккаунт?</h2>
@@ -21,12 +25,15 @@ export default {
     const name = ref('');
     const username = ref('');
     const password = ref('');
-
+    const email = ref('');
+    const phone_number = ref('');
     const register = async () => {
       try {
         const response = await axios.post('http://localhost:8080/api/v1/register', {
           name: name.value,
-          password: password.value
+          password: password.value,
+          email:email.value,
+          phone_number:phone_number.value
         });
 
 // Обработка успешной регистрации
@@ -40,6 +47,8 @@ export default {
       name,
       username,
       password,
+      phone_number,
+      email,
       register
     };
   }

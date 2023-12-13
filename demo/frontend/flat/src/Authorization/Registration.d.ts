@@ -1,4 +1,4 @@
-declare module '@/views/Authorization.vue' {
+declare module '@/Authorization/Registration.vue' {
     import Vue from 'vue';
     export default Vue;
 }

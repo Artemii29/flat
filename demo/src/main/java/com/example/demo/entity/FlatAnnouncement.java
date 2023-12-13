@@ -76,8 +76,8 @@ public class FlatAnnouncement {
         return user;
     }
 
-    enum type{
-        active,archive,sell,buy
+    enum Type{
+        ACTIVE,archive,sell,buy
     };
 
     @ManyToOne

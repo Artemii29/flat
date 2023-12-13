@@ -6,13 +6,13 @@ import { RouterLink, RouterView } from 'vue-router'
   <header>
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
 
       <nav>
         <RouterLink to="/registration">Регистрация</RouterLink>
         <RouterLink to="/authorization">Авторизация</RouterLink>
         <RouterLink to="/createAnnouncemnt">Создайте объявление</RouterLink>
-        <RouterLink to="allAnnouncement">Все объявления</RouterLink>
+        <RouterLink to="/allAnnouncement">Все объявления</RouterLink>
+        <RouterLink to="/UserAnnouncements">Мои объявления</RouterLink>
       </nav>
     </div>
   </header>
