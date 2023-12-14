@@ -39,8 +39,8 @@ public class AnnouncementController {
 
     // /users/{userId}/favorites - GET, POST, etc
     @PostMapping("/createAnnouncement")
-    public FlatAnnouncement createAnnouncement(@RequestBody FlatAnnouncement flatAnnouncement, @AuthenticationPrincipal UserDetails principal){
-        return announcementService.createAnnouncement(flatAnnouncement,principal);
+    public FlatAnnouncement createAnnouncement(@RequestBody FlatAnnouncement flatAnnouncement, @AuthenticationPrincipal UserDetails principal,MultipartFile files[]){
+        return announcementService.createAnnouncement(flatAnnouncement,principal,files);
     }
     @GetMapping("/favorites/{userId}")
     public List<Favorites> getUserFavorites(@PathVariable Long userId) {
@@ -48,8 +48,8 @@ public class AnnouncementController {
         //
     }
     @PostMapping("/addphoto")
-    public void addPhoto(@RequestParam("file") MultipartFile file) throws IOException {
-        announcementService.saveFlatPhoto(file);
+    public void addPhoto(@RequestParam("file") MultipartFile file,FlatAnnouncement announcement) throws IOException {
+        announcementService.saveFlatPhoto(file,announcement);
 
     }
 

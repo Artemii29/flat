@@ -45,20 +45,28 @@ public class AnnouncementService {
         // TODO: add some business logic here
         return announcementRepository.save(flatAnnouncement);
     }
-    public FlatAnnouncement createAnnouncement(FlatAnnouncement flatAnnouncement,@AuthenticationPrincipal UserDetails principal){
+    public FlatAnnouncement createAnnouncement(FlatAnnouncement flatAnnouncement,@AuthenticationPrincipal UserDetails principal,MultipartFile[] files){
         String username = principal.getUsername();
         User user = userRepository.findByName(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         flatAnnouncement.setUser(user);
         //установить ссылку на пользователя из бд
         //пользоваетлю в список добавляем новое объявление добавить проверки
+// Сохранить объявление
+        FlatAnnouncement savedAnnouncement = announcementRepository.save(flatAnnouncement);
 
-        return announcementRepository.save(flatAnnouncement);
+        // Сохранить фото для объявления
+        for (MultipartFile file : files) {
+            saveFlatPhoto(file, savedAnnouncement);
+        }
+
+        return savedAnnouncement;
     }
-    public void saveFlatPhoto(MultipartFile file)  {
+    public void saveFlatPhoto(MultipartFile file,FlatAnnouncement announcement)  {
         // Создать экземпляр FlatPhoto на основе MultipartFile
         FlatPhoto flatPhoto = new FlatPhoto();
         flatPhoto.setFileName(file.getOriginalFilename());
+        flatPhoto.setFlatAnnouncement(announcement);
 
         // Сохранить FlatPhoto в репозитории
         flatPhotoRepository.save(flatPhoto);
