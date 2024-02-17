@@ -8,7 +8,9 @@ import com.example.demo.service.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.demo.entity.FlatAnnouncement;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -37,19 +39,25 @@ public class AnnouncementController {
     }
 
 
-    // /users/{userId}/favorites - GET, POST, etc
-    @PostMapping("/createAnnouncement")
-    public FlatAnnouncement createAnnouncement(@RequestBody FlatAnnouncement flatAnnouncement, @AuthenticationPrincipal UserDetails principal,MultipartFile files[]){
-        return announcementService.createAnnouncement(flatAnnouncement,principal,files);
-    }
+    // /users/{userId}/favorites
+
     @GetMapping("/favorites/{userId}")
     public List<Favorites> getUserFavorites(@PathVariable Long userId) {
         return favoritesRepository.findAllByUserId(userId);
         //
     }
+
+    @PostMapping(path = "/createAnnouncement", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public FlatAnnouncement createAnnouncement(@RequestPart FlatAnnouncement flatAnnouncement
+                                            //   @RequestPart MultipartFile[] files,
+                                              /* @AuthenticationPrincipal UserDetails principal*/) {
+        System.out.println(flatAnnouncement);
+        return announcementService.createAnnouncement(flatAnnouncement, /*principal*/null,/*files*/ null);
+    }
+
     @PostMapping("/addphoto")
-    public void addPhoto(@RequestParam("file") MultipartFile file,FlatAnnouncement announcement) throws IOException {
-        announcementService.saveFlatPhoto(file,announcement);
+    public void addPhoto(@RequestParam("file") MultipartFile file, FlatAnnouncement announcement) throws IOException {
+        announcementService.saveFlatPhoto(file, announcement);
 
     }
 

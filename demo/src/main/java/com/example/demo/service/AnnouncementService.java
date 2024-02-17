@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.FlatAnnouncement;
 import com.example.demo.entity.FlatPhoto;
+import com.example.demo.entity.FlatStyle;
 import com.example.demo.entity.User;
 import com.example.demo.repository.FlatPhotoRepository;
 import com.example.demo.repository.UserRepository;
@@ -24,12 +25,14 @@ public class AnnouncementService {
     private final AnnouncementRepository announcementRepository;
     private final UserRepository userRepository;
     private FlatPhotoRepository flatPhotoRepository;
+
     @Autowired
-    public AnnouncementService(AnnouncementRepository announcementRepository, UserRepository userRepository,FlatPhotoRepository flatPhotoRepository) {
+    public AnnouncementService(AnnouncementRepository announcementRepository, UserRepository userRepository, FlatPhotoRepository flatPhotoRepository) {
         this.announcementRepository = announcementRepository;
         this.userRepository = userRepository;
         this.flatPhotoRepository = flatPhotoRepository;
     }
+
     public FlatAnnouncement findAnnouncementById(Long id) {
         return announcementRepository.findById(id).orElseThrow();
     }
@@ -38,14 +41,16 @@ public class AnnouncementService {
         return announcementRepository.findAll();
     }
 
-    public void deleteAnnouncement(Long id){
+    public void deleteAnnouncement(Long id) {
         announcementRepository.deleteById(id);
     }
-    public FlatAnnouncement updateAnnouncement(FlatAnnouncement flatAnnouncement){
+
+    public FlatAnnouncement updateAnnouncement(FlatAnnouncement flatAnnouncement) {
         // TODO: add some business logic here
         return announcementRepository.save(flatAnnouncement);
     }
-    public FlatAnnouncement createAnnouncement(FlatAnnouncement flatAnnouncement,@AuthenticationPrincipal UserDetails principal,MultipartFile[] files){
+
+    public FlatAnnouncement createAnnouncement(FlatAnnouncement flatAnnouncement, @AuthenticationPrincipal UserDetails principal, MultipartFile[] files) {
         String username = principal.getUsername();
         User user = userRepository.findByName(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -56,14 +61,22 @@ public class AnnouncementService {
         FlatAnnouncement savedAnnouncement = announcementRepository.save(flatAnnouncement);
 
         // Сохранить фото для объявления
-        for (MultipartFile file : files) {
-            saveFlatPhoto(file, savedAnnouncement);
+        if (files != null) {
+            for (MultipartFile file : files) {
+                saveFlatPhoto(file, savedAnnouncement);
+            }
         }
 
         return savedAnnouncement;
     }
-    public void saveFlatPhoto(MultipartFile file,FlatAnnouncement announcement)  {
+
+    public List<FlatAnnouncement> filterAnnouncementsByStyleAndRooms(FlatStyle flatStyle, int rooms) {
+        return announcementRepository.findByflatStyleAndRooms(flatStyle, rooms);
+    }
+
+    public void saveFlatPhoto(MultipartFile file, FlatAnnouncement announcement) {
         // Создать экземпляр FlatPhoto на основе MultipartFile
+        // проверять на расширение и размер
         FlatPhoto flatPhoto = new FlatPhoto();
         flatPhoto.setFileName(file.getOriginalFilename());
         flatPhoto.setFlatAnnouncement(announcement);

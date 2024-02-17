@@ -77,10 +77,9 @@ public class FlatAnnouncement {
     }
 
     enum Type{
-        ACTIVE,archive,sell,buy
+        ACTIVE,ARCHIVE,SELL,BUY
     };
-
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
     private FlatStyle flatStyle;
 
     @OneToMany(mappedBy = "flatAnnouncement", cascade = CascadeType.ALL, orphanRemoval = true)

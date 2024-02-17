@@ -4,34 +4,40 @@
     <form @submit="handleSubmit">
       <label>
         Title:
-        <input type="text" v-model="title" />
+        <input type="text" v-model="title"/>
       </label>
-      <br />
+      <br/>
       <label>
         Description:
         <textarea v-model="description"></textarea>
       </label>
-      <br />
+      <br/>
+      <input type="file" ref="file"/>
       <button type="submit" class="send_form">Submit</button>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import {ref} from 'vue';
 import axios from 'axios';
 
+const file = ref('');
 const title = ref('');
 const description = ref('');
 const token = ref(localStorage.getItem('token') || ''); // Проверка наличия значения в localStorage
+//как во vue добавить файл в формдата
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
 
-  // Создание объекта с данными объявления
-  const announcementData = {
+  const FlatAnnouncement = {
     title: title.value,
-    description: description.value,
-  };
+    file:file.value
+
+  }
+  FlatAnnouncement
+  const announcementData = new FormData();
+  announcementData.append('flatAnnouncement', JSON.stringify(FlatAnnouncement));
 
   try {
     console.log(token.value);
@@ -39,22 +45,23 @@ const handleSubmit = async (e: Event) => {
     const response = await axios.post('http://localhost:8080/api/v1/announcements/createAnnouncement', announcementData, {
       headers: {
         Authorization: 'Bearer ' + token.value,
+        'Content-Type': 'multipart/form-data'
       },
-    });
-
+    },);
     console.log(response.data); // Результат запроса
-
     // Очистка полей формы
     title.value = '';
     description.value = '';
   } catch (error) {
     console.error(error);
   }
+
 };
+
 
 </script>
 <style scoped>
-.send_form{
+.send_form {
   border-radius: 20px;
   width: 25%;
   height: 40px;
@@ -63,7 +70,8 @@ const handleSubmit = async (e: Event) => {
   font-weight: bold;
   cursor: pointer;
 }
-.send_form:hover{
+
+.send_form:hover {
   background-color: #00bfff;
 }
 </style>

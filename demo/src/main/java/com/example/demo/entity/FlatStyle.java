@@ -3,13 +3,7 @@ import jakarta.persistence.*;
 
 
 
-@Entity
-@Table(name = "FlatStyle")
-public class FlatStyle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String style;
-
-    // getters and setters
+//enum
+public enum FlatStyle {
+    SKANDINAVIAN,ECOSTYLE,MINIMALIZM,LOFT,CLASSICAL,HIGHTECK,EURO
 }

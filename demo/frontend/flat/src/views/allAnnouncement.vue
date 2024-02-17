@@ -14,6 +14,7 @@ const announcements = ref<{ title: string, description: string }[]>([]);
 const token = ref(localStorage.getItem('token') || ''); // Проверка наличия значения в localStorage
 import AnnouncementCard from "@/components/AnnouncementCard.vue";
 onMounted(async () => {
+  console.log(token.value)
   try {
     const response = await axios.get('http://localhost:8080/api/v1/announcements/getAnnouncement', {
           headers: {

@@ -60,7 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/createAnnouncement/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+              //  .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
 
