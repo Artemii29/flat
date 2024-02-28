@@ -1,5 +1,7 @@
 package com.example.demo.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.data.repository.cdi.Eager;
 
 import java.util.List;
 
@@ -38,6 +40,10 @@ public class FlatAnnouncement {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Float getArea() {
@@ -82,13 +88,13 @@ public class FlatAnnouncement {
     @Enumerated(EnumType.STRING)
     private FlatStyle flatStyle;
 
-    @OneToMany(mappedBy = "flatAnnouncement", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "flatAnnouncement", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<FlatPhoto> flatPhoto;
 
     public void setUser(User user) {
         this.user = user;
     }
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

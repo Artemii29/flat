@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import axios from 'axios';
-
+const files = ref([]);
 const file = ref('');
 const title = ref('');
 const description = ref('');
@@ -29,15 +29,17 @@ const token = ref(localStorage.getItem('token') || ''); // Проверка на
 //как во vue добавить файл в формдата
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
+  console.log(file.value.files)
 
   const FlatAnnouncement = {
     title: title.value,
-    file:file.value
-
+    description: description.value
   }
-  FlatAnnouncement
   const announcementData = new FormData();
   announcementData.append('flatAnnouncement', JSON.stringify(FlatAnnouncement));
+  for (const fil of file.value.files) {
+    announcementData.append("files", fil);
+  }
 
   try {
     console.log(token.value);

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps({
   announcement:{
-    type: Object as () => { title: string, description: string,photo:string },
+    type: Object as () => { title: string, description: string,photo:File },
     required:true
   }
 })
@@ -12,7 +12,6 @@ const props = defineProps({
 <div class="announcement-card">
   <h3>{{ announcement.title }}</h3>
   <p>{{ announcement.description }}</p>
-  <img :src="announcement.photo" alt="">
   <button class="look__announcements">Посмотреть</button>
 </div>
   </div>

@@ -7,6 +7,7 @@ import com.example.demo.entity.User;
 import com.example.demo.repository.FlatPhotoRepository;
 import com.example.demo.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,9 +37,12 @@ public class AnnouncementService {
     public FlatAnnouncement findAnnouncementById(Long id) {
         return announcementRepository.findById(id).orElseThrow();
     }
-
+    @Transactional
     public List<FlatAnnouncement> getAnnouncementAll() {
-        return announcementRepository.findAll();
+        List<FlatAnnouncement> announcements = announcementRepository.findAll();
+
+
+        return announcements;
     }
 
     public void deleteAnnouncement(Long id) {
@@ -77,12 +81,15 @@ public class AnnouncementService {
     public void saveFlatPhoto(MultipartFile file, FlatAnnouncement announcement) {
         // Создать экземпляр FlatPhoto на основе MultipartFile
         // проверять на расширение и размер
-        FlatPhoto flatPhoto = new FlatPhoto();
-        flatPhoto.setFileName(file.getOriginalFilename());
-        flatPhoto.setFlatAnnouncement(announcement);
-
-        // Сохранить FlatPhoto в репозитории
-        flatPhotoRepository.save(flatPhoto);
+        try {
+            FlatPhoto flatPhoto = new FlatPhoto();
+            flatPhoto.setFileName(file.getOriginalFilename());
+            flatPhoto.setFlatAnnouncement(announcement);
+            flatPhoto.setData(file.getBytes());
+            // Сохранить FlatPhoto в репозитории
+            flatPhotoRepository.save(flatPhoto);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
-
 }

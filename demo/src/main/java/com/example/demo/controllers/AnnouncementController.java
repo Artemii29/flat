@@ -1,10 +1,14 @@
 package com.example.demo.controllers;
 
 import ch.qos.logback.core.model.Model;
+import com.example.demo.dtos.FormDataDto;
 import com.example.demo.entity.Favorites;
 import com.example.demo.entity.FlatPhoto;
 import com.example.demo.repository.FavoritesRepository;
 import com.example.demo.service.AnnouncementService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.demo.entity.FlatAnnouncement;
 import org.springframework.http.HttpStatus;
@@ -32,7 +36,6 @@ public class AnnouncementController {
         this.announcementService = announcementService;
         this.favoritesRepository = favoritesRepository;
     }
-
     @GetMapping("getAnnouncement")
     public List<FlatAnnouncement> getAllAnnouncements() {
         return announcementService.getAnnouncementAll();
@@ -47,12 +50,22 @@ public class AnnouncementController {
         //
     }
 
-    @PostMapping(path = "/createAnnouncement", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public FlatAnnouncement createAnnouncement(@RequestPart FlatAnnouncement flatAnnouncement
-                                            //   @RequestPart MultipartFile[] files,
-                                              /* @AuthenticationPrincipal UserDetails principal*/) {
-        System.out.println(flatAnnouncement);
-        return announcementService.createAnnouncement(flatAnnouncement, /*principal*/null,/*files*/ null);
+    @PostMapping(path = "/createAnnouncement")
+    public FlatAnnouncement createAnnouncement(@ModelAttribute FormDataDto formDataDto,
+    @ModelAttribute MultipartFile[] files,
+    @AuthenticationPrincipal UserDetails principal) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println(files);
+        System.out.println(principal);
+        FlatAnnouncement flatAnnouncement = null;
+        try {
+           flatAnnouncement = objectMapper.readValue(formDataDto.getFlatAnnouncement(), FlatAnnouncement.class);
+           return announcementService.createAnnouncement(flatAnnouncement, principal ,files );
+
+        } catch (JsonProcessingException e) {
+            System.out.println(flatAnnouncement.getTitle());
+            return null;
+        }
     }
 
     @PostMapping("/addphoto")
